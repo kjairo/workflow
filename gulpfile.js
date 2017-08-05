@@ -6,8 +6,9 @@ var gulp =  require('gulp'),
 	browserify = require('gulp-browserify'),
 	connect = require('gulp-connect'),
 	gulpif = require('gulp-if'),
-	uglify = require('gulp-uglify');
-	
+	uglify = require('gulp-uglify'),
+	minifyHTML = require('gulp-htmlmin');
+
 var env,
 	coffeeSources,
 	jsSources,
@@ -61,17 +62,18 @@ gulp.task('compass', function(){
 	   		sass:  'components/sass',
 	   		image: outputDir + 'images',
 	   		style: sassStyle
-	   	}))
-	   .on('error', gutil.log)
+	   	})
+	   .on('error', gutil.log))
 	   .pipe(gulp.dest(outputDir + 'css'))	
 	   .pipe(connect.reload())
 });
 
 gulp.task('watch', function(){
-	gulp.watch(jsSources, ['js']);
-	gulp.watch('components/sass/*.scss', ['compass']);
-	gulp.watch(htmlSources, ['html']);
-	gulp.watch(jsonSources, ['json']);
+  gulp.watch(coffeeSources, ['coffee']);
+  gulp.watch(jsSources, ['js']);
+  gulp.watch('components/sass/*.scss', ['compass']);
+  gulp.watch(htmlSources, ['html']);
+  gulp.watch(jsonSources, ['json']);
 });
 
 gulp.task('connect', function(){
@@ -80,10 +82,11 @@ gulp.task('connect', function(){
 		livereload:true
 	});
 });
-
 gulp.task('html', function(){
-	gulp.src(htmlSources)
-	  .pipe(connect.reload())
+	gulp.src('builds/development/*.html')
+	   .pipe(gulpif(env === 'production', minifyHTML({collapseWhitespace: true})))
+	   .pipe(gulpif(env === 'production', gulp.dest(outputDir)))	
+	   .pipe(connect.reload())
 });
 
 gulp.task('json', function(){
