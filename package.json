@@ -17,12 +17,17 @@
     "gulp-connect": "^5.0.0",
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.3.0",
     "gulp-jsonminify": "^1.0.0",
     "gulp-minify": "^1.0.0",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "html": "^1.0.0",
+    "imagemin": "^5.3.1",
     "jquery": "^3.2.1",
     "mustache": "^2.3.0"
+  },
+  "dependencies": {
+    "imagemin-pngcrush": "^5.1.0"
   }
 }
